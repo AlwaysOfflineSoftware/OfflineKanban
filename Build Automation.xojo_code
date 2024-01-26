@@ -7,7 +7,7 @@
 				Begin BuildProjectStep Build
 				End
 				Begin SignProjectStep Sign
-				  DeveloperID=AlwaysOfflineSoftware
+				  DeveloperID=
 				End
 			End
 			Begin BuildStepList Windows
