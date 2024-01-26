@@ -2,7 +2,7 @@
 Protected Module SettingsHandler
 	#tag Method, Flags = &h0
 		Sub CheckSettings()
-		  Var settingsContent As String= ReadFile(App.settingsFile.URLPath.Replace("file://",""))
+		  Var settingsContent As String= ReadFile(App.settingsFile.NativePath)
 		  Var settings() As String= settingsContent.Split(EndOfLine)
 		  Var line() As String
 		  Var item As String
@@ -78,7 +78,7 @@ Protected Module SettingsHandler
 
 	#tag Method, Flags = &h0
 		Sub SetSettings(option as string, value as string)
-		  Var settingsContent As String= ReadFile(App.settingsFile.URLPath.Replace("file://",""))
+		  Var settingsContent As String= ReadFile(App.settingsFile.NativePath)
 		  Var newSettingsContent As String
 		  Var settings() As String= settingsContent.Split(EndOfLine)
 		  Var line() As String

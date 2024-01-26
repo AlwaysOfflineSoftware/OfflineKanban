@@ -25,35 +25,46 @@ Begin DesktopContainer KanbanBanner
    Transparent     =   True
    Visible         =   True
    Width           =   730
-   Begin CanvasBanner CanvasKB
-      AllowAutoDeactivate=   True
-      AllowFocus      =   False
-      AllowFocusRing  =   True
-      AllowTabs       =   False
-      Backdrop        =   0
-      Enabled         =   True
-      Height          =   50
-      Index           =   -2147483648
-      Left            =   0
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   True
-      Scope           =   0
-      TabIndex        =   0
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   0
-      Transparent     =   True
-      Visible         =   True
-      Width           =   730
-   End
 End
 #tag EndDesktopWindow
 
 #tag WindowCode
+	#tag Event
+		Sub Paint(g As Graphics, areas() As Rect)
+		  var bannerX as integer= Self.width
+		  var bannerY as integer= Self.Height
+		  
+		  If(IsDarkMode) Then
+		    g.ForeColor= RGB(56, 56, 56)
+		  Else
+		    g.ForeColor= RGB(0,0,0)
+		  End
+		  
+		  // card fill
+		  g.FillRoundRectangle(0,0,bannerX,bannerY,0,0)
+		  
+		  // card border
+		  g.ForeColor=RGB(0,0,0)
+		  g.PenSize=2
+		  g.DrawRoundRect(0,0,bannerX,bannerY,0,0)
+		  
+		  If(IsDarkMode) Then
+		    g.ForeColor= RGB(255,255,255)
+		  Else
+		    g.ForeColor= RGB(0,0,0)
+		  End
+		  
+		  g.TextFont="Liberation Sans"
+		  g.TextUnit=FontUnits.Point
+		  g.TextSize=24
+		  g.DrawText("Backlog",60,(Self.Height/2)+(24*0.33))
+		  g.DrawText("In Progress",(bannerX/2)-45,(bannerY/2)+(24*0.33))
+		  g.DrawText("Complete",(bannerX)-130,(bannerY/2)+(24*0.33))
+		  
+		End Sub
+	#tag EndEvent
+
+
 #tag EndWindowCode
 
 #tag ViewBehavior
