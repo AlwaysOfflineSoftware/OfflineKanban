@@ -57,8 +57,8 @@ Protected Module SettingsHandler
 
 	#tag Method, Flags = &h0
 		Function InitSettingsFile() As folderItem
-		  Var file As New FolderItem(SpecialFolder.Documents.child("OfflineKanban").Child("settings.txt"))
-		  Var dbLoc As New FolderItem(SpecialFolder.Documents.child("OfflineKanban").Child("data").Child("Kanban.sqlite"))
+		  Var file As New FolderItem(App.ResourcesFolder.Child("settings.txt"))
+		  Var dbLoc As New FolderItem(App.dataFolder.Child("Kanban.sqlite"))
 		  
 		  If(file<>Nil) Then
 		    Var output As TextOutputStream

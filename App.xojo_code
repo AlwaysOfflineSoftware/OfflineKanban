@@ -3,9 +3,12 @@ Protected Class App
 Inherits DesktopApplication
 	#tag Event
 		Sub Opening()
-		  App.DataFolder= CreateFolderStructure(SpecialFolder.Documents,"OfflineKanban/data")
-		  App.ResourcesFolder= SpecialFolder.Documents.Child("OfflineKanban")
-		  app.dbfile= SpecialFolder.Documents.child("OfflineKanban").child("data").Child("Kanban.sqlite")
+		  App.DataFolder= CreateFolderStructure(SpecialFolder.UserHome.Child(".config")._
+		  Child("AlwaysOfflineSoftware"),"OfflineKanban/data")
+		  App.ResourcesFolder= SpecialFolder.UserHome.Child(".config")._
+		  Child("AlwaysOfflineSoftware").Child("OfflineKanban")
+		  App.dataFolder= App.ResourcesFolder.Child("data")
+		  app.dbfile= App.ResourcesFolder.child("data").Child("Kanban.sqlite")
 		  settingsFile= InitSettingsFile()
 		  CheckSettings()
 		  InitDatabase()
