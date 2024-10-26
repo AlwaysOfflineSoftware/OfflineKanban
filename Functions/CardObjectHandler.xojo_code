@@ -25,7 +25,7 @@ Protected Module CardObjectHandler
 		    newCard.EmbedWithin(target, MainScreen.CanvasLine2.Left+40, 75)
 		  End
 		  
-		  CardAppearanceHandler(newCard)
+		  CardDesign(newCard)
 		  
 		  newCard.cardID= GenerateUniqueID()
 		  cardPopulation.Add(newCard)
@@ -85,7 +85,7 @@ Protected Module CardObjectHandler
 		    oldCard.EmbedWithin(target, MainScreen.CanvasLine2.Left+40, 75)
 		  End
 		  
-		  CardAppearanceHandler(oldCard)
+		  CardDesign(oldCard)
 		  
 		  oldCard.cardID= id
 		  cardPopulation.Add(oldCard)
@@ -96,8 +96,45 @@ Protected Module CardObjectHandler
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub AdjustCardsToScreen()
+		  // Used to dynamically space cards
+		  Var bcounter As Integer= 0
+		  Var pcounter As Integer= 0
+		  Var ccounter As Integer= 0
+		  Var countUp As Integer= 85
+		  Var sep1 As Integer= MainScreen.CanvasLine1.Left
+		  Var sep2 As Integer= MainScreen.CanvasLine2.Left
+		  Var cardWidth As Integer
+		  
+		  For Each card As KanbanCardv2 In cardPopulation
+		    cardWidth= card.width
+		    If(card.cardStatus=0) Then
+		      card.Left=0+((sep1-0-cardWidth)/2)
+		      card.Top= 60 + bcounter
+		      bcounter=bcounter+countUp
+		      
+		    ElseIf(card.cardStatus=1) Then
+		      card.Left=sep1+((sep2-sep1-cardWidth)/2)
+		      card.Top= 60 + pcounter
+		      pcounter=pcounter+countUp
+		      
+		    ElseIf(card.cardStatus=2) Then
+		      card.Left=sep2+((MainScreen.width-sep2-cardWidth)/2)
+		      card.Top= 60 + ccounter
+		      ccounter=ccounter+countUp
+		    End
+		    
+		    If(card.top<20) Then
+		      card.Top= 60
+		    End
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
-		Private Sub CardAppearanceHandler(inCard as kanbancardv2)
+		Private Sub CardDesign(inCard as kanbancardv2)
 		  If(inCard.cardType=0) Then
 		    inCard.card.cardTypeText= "Feature"
 		  ElseIf(inCard.cardType=1) Then
@@ -134,7 +171,7 @@ Protected Module CardObjectHandler
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function CardTitleHandler(titleStr as String) As String
+		Function CardWriteTitle(titleStr as String) As String
 		  var maxChars as Integer= 22
 		  var charCount as integer= 0
 		  var maxLines as Boolean= False
@@ -181,42 +218,6 @@ Protected Module CardObjectHandler
 		    card.Close
 		  Next
 		  cardPopulation.RemoveAll
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub DynamicScreenCard()
-		  Var bcounter As Integer= 0
-		  Var pcounter As Integer= 0
-		  Var ccounter As Integer= 0
-		  Var countUp As Integer= 85
-		  Var sep1 As Integer= MainScreen.CanvasLine1.Left
-		  Var sep2 As Integer= MainScreen.CanvasLine2.Left
-		  Var cardWidth As Integer
-		  
-		  For Each card As KanbanCardv2 In cardPopulation
-		    cardWidth= card.width
-		    If(card.cardStatus=0) Then
-		      card.Left=0+((sep1-0-cardWidth)/2)
-		      card.Top= 60 + bcounter
-		      bcounter=bcounter+countUp
-		      
-		    ElseIf(card.cardStatus=1) Then
-		      card.Left=sep1+((sep2-sep1-cardWidth)/2)
-		      card.Top= 60 + pcounter
-		      pcounter=pcounter+countUp
-		      
-		    ElseIf(card.cardStatus=2) Then
-		      card.Left=sep2+((MainScreen.width-sep2-cardWidth)/2)
-		      card.Top= 60 + ccounter
-		      ccounter=ccounter+countUp
-		    End
-		    
-		    If(card.top<20) Then
-		      card.Top= 60
-		    End
-		  Next
-		  
 		End Sub
 	#tag EndMethod
 
@@ -322,6 +323,7 @@ Protected Module CardObjectHandler
 
 	#tag Method, Flags = &h0
 		Sub RepositionCards(movingCard as kanbancardv2, increment as integer)
+		  // Allows cards to push each other out of the way
 		  For Each card As KanbanCardv2 In cardPopulation
 		    If(movingCard.cardID<>card.cardID) Then 
 		      If(movingCard.Left+movingCard.Width>=card.Left And movingCard.Left<=card.Left+card.width) Then
@@ -358,7 +360,7 @@ Protected Module CardObjectHandler
 		      card.card.cardName= title
 		      card.Tooltip= description
 		      
-		      CardAppearanceHandler(card)
+		      CardDesign(card)
 		      card.Refresh(True)
 		    End
 		  Next

@@ -4,7 +4,7 @@ Protected Module ProjectSQLHandler
 		Sub CreateProjectRecord(projID as integer, projName as string, projDesc as String)
 		  Var builtQuery As String= "INSERT INTO USER_PROJECTS VALUES ('" + projId.ToString + "','" + projName + "','" + projDesc + "')"
 		  
-		  runStatement(builtQuery)
+		  SQLHandler.runStatement(builtQuery)
 		End Sub
 	#tag EndMethod
 
@@ -13,8 +13,8 @@ Protected Module ProjectSQLHandler
 		  Var deleteProjectQuery As String= "DELETE FROM USER_PROJECTS WHERE project='" + ProjName + "'"
 		  Var deleteCardsQuery As String= "DELETE FROM USER_CARDS WHERE project='" + ProjName + "'"
 		  
-		  runStatement(deleteProjectQuery)
-		  runStatement(deleteCardsQuery)
+		  SQLHandler.runStatement(deleteProjectQuery)
+		  SQLHandler.runStatement(deleteCardsQuery)
 		End Sub
 	#tag EndMethod
 
@@ -22,7 +22,7 @@ Protected Module ProjectSQLHandler
 		Function getProjectDescription(projName as string) As String
 		  Var selectQuery As String= "SELECT description FROM USER_PROJECTS WHERE project= '" + ProjName + "'"
 		  
-		  Return runQuery(selectQuery).Column("description").StringValue
+		  Return SQLHandler.runQuery(selectQuery).Column("description").StringValue
 		End Function
 	#tag EndMethod
 
@@ -30,7 +30,7 @@ Protected Module ProjectSQLHandler
 		Function InitProjects() As Rowset
 		  Var builtQuery As String= "SELECT * FROM USER_PROJECTS"
 		  
-		  Return runQuery(builtQuery)
+		  Return SQLHandler.runQuery(builtQuery)
 		End Function
 	#tag EndMethod
 
@@ -38,7 +38,7 @@ Protected Module ProjectSQLHandler
 		Sub UpdateProjectRecord(name as string, column as string, newValue as string)
 		  Var updateProjectQuery As String= "UPDATE USER_PROJECTS SET " + column + "= '" + newValue + "' Where project= '" + name +"'"
 		  
-		  runStatement(updateProjectQuery)
+		  SQLHandler.runStatement(updateProjectQuery)
 		End Sub
 	#tag EndMethod
 

@@ -477,11 +477,13 @@ Begin DesktopWindow EditCardScreen
       Top             =   20
       Transparent     =   False
       Underline       =   False
+      Value           =   False
       Visible         =   True
       VisualState     =   0
       Width           =   22
    End
    Begin DesktopBevelButton btn_Screenshot
+      Active          =   False
       AllowAutoDeactivate=   True
       AllowFocus      =   True
       AllowTabStop    =   True
@@ -513,6 +515,7 @@ Begin DesktopWindow EditCardScreen
       LockRight       =   False
       LockTop         =   True
       MenuStyle       =   0
+      PanelIndex      =   0
       Scope           =   0
       TabIndex        =   14
       TabPanelIndex   =   0
@@ -524,6 +527,10 @@ Begin DesktopWindow EditCardScreen
       Value           =   False
       Visible         =   True
       Width           =   60
+      _mIndex         =   0
+      _mInitialParent =   ""
+      _mName          =   ""
+      _mPanelIndex    =   0
    End
 End
 #tag EndDesktopWindow

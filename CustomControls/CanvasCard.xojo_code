@@ -31,7 +31,7 @@ Inherits DesktopCanvas
 		  g.TextFont="Liberation Sans"
 		  g.TextUnit=FontUnits.Point
 		  g.TextSize= 16
-		  g.DrawText(CardTitleHandler(cardName),(cardTypeText.Length),22)
+		  g.DrawText(CardObjectHandler.CardWriteTitle(cardName),(cardTypeText.Length),22)
 		  
 		  // type text
 		  g.TextSize= 14

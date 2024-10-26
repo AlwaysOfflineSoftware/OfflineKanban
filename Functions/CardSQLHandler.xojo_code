@@ -6,7 +6,7 @@ Protected Module CardSQLHandler
 		  + project + "','" + name + "','" + details + "'," + priority.ToString + ","_
 		  + status.ToString + "," + type.ToString + "," + posY.toString + ")"
 		  
-		  runStatement(builtQuery)
+		  SQLHandler.runStatement(builtQuery)
 		End Sub
 	#tag EndMethod
 
@@ -14,7 +14,7 @@ Protected Module CardSQLHandler
 		Sub deleteRecord(id as integer)
 		  Var builtQuery As String= "DELETE FROM USER_CARDS WHERE id=" + id.ToString
 		  
-		  runStatement(builtQuery)
+		  SQLHandler.runStatement(builtQuery)
 		End Sub
 	#tag EndMethod
 
@@ -25,8 +25,8 @@ Protected Module CardSQLHandler
 		  + "','" + name + "','" + details + "'," + priority.ToString + "," + status.ToString + ","_
 		  + type.ToString + "," + posY.toString + ")"
 		  
-		  runStatement(deleteQuery)
-		  runStatement(insertQuery)
+		  SQLHandler.runStatement(deleteQuery)
+		  SQLHandler.runStatement(insertQuery)
 		End Sub
 	#tag EndMethod
 
@@ -35,7 +35,7 @@ Protected Module CardSQLHandler
 		  Var selectAllQuery As String= "SELECT * FROM USER_CARDS WHERE project='" + projectName + "'"
 		  Var results As RowSet
 		  
-		  results= runQuery(selectAllQuery)
+		  results= SQLHandler.runQuery(selectAllQuery)
 		  
 		  Return results
 		  
@@ -47,7 +47,7 @@ Protected Module CardSQLHandler
 		  Var updateQuery As String= "UPDATE USER_CARDS SET " + EditColumn + " = " + editValue + " WHERE " + identityColumn + " = " + identityValue
 		  // Var pathToDB As FolderItem= app.ExecutableFile.Parent.Parent.Child("Kanban.sqlite")
 		  
-		  runStatement(updateQuery)
+		  SQLHandler.runStatement(updateQuery)
 		End Sub
 	#tag EndMethod
 

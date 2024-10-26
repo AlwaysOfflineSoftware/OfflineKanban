@@ -31,7 +31,7 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
-		  var bannerX as integer= Self.width
+		  Var bannerX As Integer= Self.width
 		  var bannerY as integer= Self.Height
 		  
 		  If(IsDarkMode) Then
@@ -57,7 +57,7 @@ End
 		  g.TextFont="Liberation Sans"
 		  g.TextUnit=FontUnits.Point
 		  g.TextSize=24
-		  g.DrawText("Backlog",60,(Self.Height/2)+(24*0.33))
+		  g.DrawText("Backlog",30,(Self.Height/2)+(24*0.33))
 		  g.DrawText("In Progress",(bannerX/2)-45,(bannerY/2)+(24*0.33))
 		  g.DrawText("Complete",(bannerX)-130,(bannerY/2)+(24*0.33))
 		  

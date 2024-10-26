@@ -491,4 +491,20 @@ End
 		Type="Boolean"
 		EditorType=""
 	#tag EndViewProperty
+	#tag ViewProperty
+		Name="CardID"
+		Visible=false
+		Group="Behavior"
+		InitialValue="0"
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="attatchExtension"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="String"
+		EditorType=""
+	#tag EndViewProperty
 #tag EndViewBehavior

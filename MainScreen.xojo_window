@@ -148,7 +148,7 @@ End
 		  CanvasLine1.Left=MainScreen.Width*0.3333
 		  CanvasLine2.Left=MainScreen.Width*0.6667
 		  
-		  DynamicScreenCard()
+		  AdjustCardsToScreen()
 		End Sub
 	#tag EndEvent
 
