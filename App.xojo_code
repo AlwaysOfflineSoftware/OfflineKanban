@@ -3,7 +3,7 @@ Protected Class App
 Inherits DesktopApplication
 	#tag Event
 		Sub Opening()
-		  App.DataFolder= CreateFolderStructure(SpecialFolder.UserHome.Child(".config")._
+		  App.DataFolder= Utils.CreateFolderStructure(SpecialFolder.UserHome.Child(".config")._
 		  Child("AlwaysOfflineSoftware"),"OfflineKanban/data")
 		  App.ResourcesFolder= SpecialFolder.UserHome.Child(".config")._
 		  Child("AlwaysOfflineSoftware").Child("OfflineKanban")

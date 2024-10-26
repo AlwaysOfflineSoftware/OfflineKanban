@@ -424,7 +424,7 @@ End
 		    txt_ProjName.Text=""
 		    txt_ProjDesc.Text=""
 		  Else
-		    ErrorHandler(2,"Name Error","You cannot name a project default or have a blank name")
+		    Utils.PopupHandler(2,"Name Error","You cannot name a project default or have a blank name")
 		  End
 		  
 		End Sub
@@ -438,11 +438,11 @@ End
 		      DeleteProjectRecord(lst_ProjectList.SelectedRowValue)
 		      lst_ProjectList.RemoveRowAt(lst_ProjectList.SelectedRowIndex)
 		    Else
-		      ErrorHandler(2,"Blocked Action",_
+		      Utils.PopupHandler(2,"Blocked Action",_
 		      "Error: You cannot delete the currently loaded project. Please load another project then delete.")
 		    End
 		  Else
-		    ErrorHandler(2,"Blocked Action","You cannot delete the Default project")
+		    Utils.PopupHandler(2,"Blocked Action","You cannot delete the Default project")
 		  End
 		End Sub
 	#tag EndEvent
@@ -487,7 +487,7 @@ End
 		    txt_ProjDesc.Text=""
 		    
 		  Else
-		    ErrorHandler(2,"Blocked Action","You cannot rename the Default project")
+		    Utils.PopupHandler(2,"Blocked Action","You cannot rename the Default project")
 		  End
 		  
 		End Sub

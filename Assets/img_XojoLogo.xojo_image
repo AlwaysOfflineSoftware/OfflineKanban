@@ -1,8 +1,8 @@
 #tag MultiImage
 Image img_XojoLogo
 	#tag ImageRepresentation
-		SaveInfo = APHRcwECAQAAAABRL2hvbWUvcGF1bGIvUHJvamVjdHMvWG9qby9EZXNrdG9wQXBwcy9vZmZsaW5la2FuYmFuL0Fzc2V0cy9td3hfbG9nby1sb25nLXRpbnkucG5nAwAAAAABAQQAAAAAAQAAAAAAAAA=
-		FullPath = /home/paulb/Projects/Xojo/DesktopApps/offlinekanban/Assets/mwx_logo-long-tiny.png
+		SaveInfo = APHRcwECAQAAAABSL2hvbWUvaG9wZWxlc3NkZWNveS9Qcm9qZWN0cy9Yb2pvL1BST0QvT2ZmbGluZUthbmJhbi9Bc3NldHMvbXd4X2xvZ28tbG9uZy10aW55LnBuZwMAAAAAAQEEAAAAAAEAAAAAAAAA
+		FullPath = /home/hopelessdecoy/Projects/Xojo/PROD/OfflineKanban/Assets/mwx_logo-long-tiny.png
 		PartialPath = Assets\mwx_logo-long-tiny.png
 		#tag ImageSpecification
 			Comment = 

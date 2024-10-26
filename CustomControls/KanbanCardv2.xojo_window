@@ -119,16 +119,27 @@ End
 #tag Events card
 	#tag Event
 		Sub DoublePressed(x As Integer, y As Integer)
-		  EditCardScreen.Show
 		  EditCardScreen.createMode= False
-		  EditCardScreen.cardID= Self.cardID
 		  EditCardScreen.txt_CardTitle.Text=Self.cardName
 		  EditCardScreen.txa_Details.Text=Self.cardDescription
 		  EditCardScreen.pop_Priority.SelectedRowIndex=Self.cardPriority
 		  EditCardScreen.pop_Status.SelectedRowIndex=Self.cardStatus
 		  EditCardScreen.pop_Type.SelectedRowIndex=Self.cardType
+		  EditCardScreen.cardID= Self.cardID
 		  EditCardScreen.btn_Delete.Enabled= True
 		  EditCardScreen.btn_Delete.Visible= True
+		  
+		  For Each item As FolderItem In App.dataFolder.Children
+		    System.DebugLog(CardID.ToString + "." + item.Extension)
+		    If(item.IsFolder) Then
+		      Continue
+		    ElseIf(item.Extension<> "" And item.Name= CardID.ToString + "." + item.Extension) Then
+		      EditCardScreen.chk_ImgAttatched.Value= True
+		      EditCardScreen.chk_ImgAttatched.Tooltip="Image Attatched!"
+		    End
+		  Next
+		  
+		  EditCardScreen.Show
 		  EditCardScreen.SetFocus()
 		End Sub
 	#tag EndEvent

@@ -25,11 +25,9 @@ Begin DesktopWindow MainScreen
    Visible         =   True
    Width           =   750
    Begin DesktopScrollbar scr_mainViewBar
-      Active          =   False
       AllowAutoDeactivate=   True
       AllowFocus      =   True
       AllowLiveScrolling=   False
-      AllowTabStop    =   True
       Enabled         =   True
       Height          =   420
       Index           =   -2147483648
@@ -44,20 +42,16 @@ Begin DesktopWindow MainScreen
       MaximumValue    =   100
       MinimumValue    =   0
       PageStep        =   20
-      PanelIndex      =   0
       Scope           =   0
       TabIndex        =   2
       TabPanelIndex   =   0
+      TabStop         =   True
       Tooltip         =   ""
       Top             =   0
       Transparent     =   False
       Value           =   0
       Visible         =   True
       Width           =   17
-      _mIndex         =   0
-      _mInitialParent =   ""
-      _mName          =   ""
-      _mPanelIndex    =   0
    End
    Begin CanvasLine CanvasLine1
       AllowAutoDeactivate=   True

@@ -249,7 +249,7 @@ End
 		  ElseIf(f= Nil) Then
 		    txt_BoardLoc.Text= txt_BoardLoc.Text
 		  Else
-		    ErrorHandler(0,"Settings Error","A folder was not selected, not allowed or doesn't exist.")
+		    Utils.PopupHandler(0,"Settings Error","A folder was not selected, not allowed or doesn't exist.")
 		  End
 		  
 		  

@@ -1,38 +1,60 @@
 #tag Module
 Protected Module Utils
 	#tag Method, Flags = &h0
-		Sub BannerRefresh(posX as integer, posY as integer)
-		  Var newBanner As KanbanBanner= New KanbanBanner // create clone of the control on the layout
+		Function CreateFolderStructure(root as folderitem, path as string) As FolderItem
+		  Var splitDirString() As String
 		  
-		  If(currentBanner<>Nil) Then
-		    currentBanner.close
+		  // remove any leading/trailing slashes
+		  If(path.Right(1)="/") Then 
+		    path=path.Left(Len(path)-1) // cannot have / on the end
 		  End
 		  
-		  newBanner.EmbedWithin(MainScreen,posX,posY,(MainScreen.Width-20),50)
+		  If(path.Left(1)="/") Then 
+		    path=path.Mid(2)
+		  End 
 		  
-		  currentBanner=newBanner
+		  // split on remaining /
+		  splitDirString= path.Split("/")
+		  Var i As Integer
+		  For i= 0 To splitDirString.ubound
+		    root= root.child(splitDirString(i))
+		    If(Not root.exists) Then 
+		      root.CreateAsFolder()
+		    End
+		  Next i
 		  
-		  
-		End Sub
+		  Return root
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ButtonRefresh(posX as integer, posY as integer)
-		  Var newAddBtn As KanbanButton= New KanbanButton // create clone of the control on the layout
+		Function LoadPicture(file As folderitem, newWidth As Integer = 0, newHeight As Integer = 0) As Picture
+		  Var original As Picture= Picture.Open(file)
 		  
-		  If(currentAddButton<>Nil) Then
-		    currentAddButton.close
-		  End
+		  Dim newPict As New Picture(newWidth, newHeight, original.Depth )
+		  newPict.Graphics.DrawPicture(_
+		  original, 0, 0, newPict.Width, newPict.Height, 0, 0, original.Width, original.Height )
 		  
-		  newAddBtn.EmbedWithin(MainScreen,posX,posY)
-		  currentAddButton=newAddBtn
+		  return newPict
 		  
-		  
-		End Sub
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ErrorHandler(typeCode as integer, message as String, explain as String)
+		Function LoadPicture(pict As Picture, newWidth As Integer = 0, newHeight As Integer = 0) As Picture
+		  Var original As Picture= pict
+		  
+		  Dim newPict As New Picture(newWidth, newHeight, original.Depth )
+		  newPict.Graphics.DrawPicture(_
+		  original, 0, 0, newPict.Width, newPict.Height, 0, 0, original.Width, original.Height )
+		  
+		  Return newPict
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub PopupHandler(typeCode as integer, message as String, explain as String)
 		  Var diag As New MessageDialog                  // declare the MessageDialog object
 		  Var clickItem As MessageDialogButton                // for handling the result
 		  
@@ -47,21 +69,21 @@ Protected Module Utils
 		    diag.IconType = MessageDialog.IconTypes.Question
 		  End Select
 		  
-		  diag.ActionButton.Visible=false
-		  diag.CancelButton.Visible = True
+		  diag.ActionButton.Visible=True
+		  diag.CancelButton.Visible = False
 		  diag.Message = message
 		  diag.Explanation = explain
 		  
 		  clickItem = diag.ShowModal
 		  Select Case clickItem
-		  Case diag.CancelButton
+		  Case diag.ActionButton
 		    clickItem.Cancel= true
 		  End Select
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ReadBinData(readFile As FolderItem) As memoryBlock
+		Function ReadBinData(readFile As FolderItem) As memoryblock
 		  If(readFile <> Nil And readFile.Exists) Then
 		    Var Binstream As BinaryStream= BinaryStream.Open(readFile, False)
 		    Var memblock As MemoryBlock= Binstream.Read(Binstream.Length)
@@ -73,20 +95,172 @@ Protected Module Utils
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ReadFile(filePath as string) As String
-		  Var f As FolderItem= New FolderItem(filePath)
+		Function ReadFile(filePath as folderItem) As String
+		  Var f As FolderItem= filePath
 		  Var t As TextInputStream
 		  Var contents As String
 		  
-		  If f <> Nil Then
+		  If(f <> Nil) Then
 		    t = TextInputStream.Open(f)
 		    t.Encoding = Encodings.UTF8 //specify encoding of input stream
 		    contents = t.ReadAll
 		    t.Close
 		    Return contents
-		  End If
+		  End
 		  
-		  return ""
+		  Return ""
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ReadFile(filePath as string) As String
+		  Var f As FolderItem= New FolderItem(filePath)
+		  Var t As TextInputStream
+		  Var contents As String
+		  
+		  If(f <> Nil) Then
+		    t = TextInputStream.Open(f)
+		    t.Encoding = Encodings.UTF8 //specify encoding of input stream
+		    contents = t.ReadAll
+		    t.Close
+		    Return contents
+		  End
+		  
+		  Return ""
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function SelectTargetDialog(startAt as String, isFolder as Boolean = False) As FolderItem
+		  If(isFolder) Then
+		    Var ddlg As New SelectFolderDialog
+		    
+		    If(startAt.Lowercase="home") Then
+		      ddlg.InitialFolder = SpecialFolder.UserHome
+		    ElseIf(startAt.Lowercase="docs") Then
+		      ddlg.InitialFolder = SpecialFolder.Documents
+		    ElseIf(startAt.Lowercase="pics") Then
+		      ddlg.InitialFolder = SpecialFolder.Pictures
+		    ElseIf(startAt.Lowercase="sys") Then
+		      ddlg.InitialFolder = SpecialFolder.Caches
+		    Else
+		      ddlg.InitialFolder = SpecialFolder.UserHome
+		    End
+		    
+		    Var result As FolderItem = ddlg.ShowModal
+		    
+		    Return result
+		    
+		  Else
+		    Var selectedItems() As FolderItem
+		    Var fdlg As New OpenFileDialog
+		    
+		    If(startAt.Lowercase="home") Then
+		      fdlg.InitialFolder = SpecialFolder.UserHome
+		    ElseIf(startAt.Lowercase="docs") Then
+		      fdlg.InitialFolder = SpecialFolder.Documents
+		    ElseIf(startAt.Lowercase="pics") Then
+		      fdlg.InitialFolder = SpecialFolder.Pictures
+		    ElseIf(startAt.Lowercase="sys") Then
+		      fdlg.InitialFolder = SpecialFolder.Caches
+		    Else
+		      fdlg.InitialFolder = SpecialFolder.UserHome
+		    End
+		    
+		    fdlg.AllowMultipleSelections = False
+		    
+		    Var result As FolderItem = fdlg.ShowModal
+		    
+		    Return result
+		    
+		  End
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SendCURL(method as String, url as String, header as String = "", value as String = "")
+		  Var client As New URLConnection
+		  
+		  If(header<>"") Then
+		    //ex: "Authorization"
+		    client.RequestHeader(header)= value
+		  End
+		  
+		  // ex: POST, GET
+		  client.Send(method,url)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ShellCommand(command as String, sudo as Boolean = False, asynchExec as Boolean = False)
+		  Var cmd As New shell
+		  
+		  If(asynchExec) Then
+		    cmd.ExecuteMode= Shell.ExecuteModes.Asynchronous
+		    
+		    If(sudo) Then
+		      cmd.Execute("pkexec " + command)
+		    Else
+		      cmd.Execute(command)
+		    End
+		    
+		    If(cmd.ExitCode <> 0) Then
+		      PopupHandler(3,"Shell Command Failed","The exit code is: " + cmd.ExitCode.ToString)
+		    End If
+		    
+		  Else
+		    // Default Synchronous
+		    If(sudo) Then
+		      cmd.Execute("pkexec " + command)
+		    Else
+		      cmd.Execute(command)
+		    End
+		    
+		    If(cmd.ExitCode <> 0) Then
+		      PopupHandler(3,"Shell Command Failed","The exit code is: " + cmd.ExitCode.ToString)
+		    End If
+		  End
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ShellCommand(command as String, sudo as Boolean = False, asynchExec as Boolean = False) As String
+		  Var cmd As New shell
+		  
+		  If(asynchExec) Then
+		    cmd.ExecuteMode= Shell.ExecuteModes.Asynchronous
+		    
+		    If(sudo) Then
+		      cmd.Execute("pkexec " + command)
+		      Return cmd.Result
+		    Else
+		      cmd.Execute(command)
+		      Return cmd.Result
+		    End
+		    
+		    If(cmd.ExitCode <> 0) Then
+		      PopupHandler(3,"Shell Command Failed","The exit code is: " + cmd.ExitCode.ToString)
+		    End If
+		    
+		  Else
+		    // Default Synchronous
+		    If(sudo) Then
+		      cmd.Execute("pkexec " + command)
+		      Return cmd.Result
+		    Else
+		      cmd.Execute(command)
+		      Return cmd.Result
+		    End
+		    
+		    If(cmd.ExitCode <> 0) Then
+		      PopupHandler(3,"Shell Command Failed","The exit code is: " + cmd.ExitCode.ToString)
+		    End If
+		  End
+		  
 		End Function
 	#tag EndMethod
 
@@ -101,8 +275,8 @@ Protected Module Utils
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub WriteFile(folder as folderitem, data as string, overwrite as boolean)
-		  Var fullFilePath As FolderItem= folder
+		Sub WriteFile(path as folderitem, data as string, overwrite as boolean)
+		  Var fullFilePath As FolderItem= path
 		  Var output As TextOutputStream
 		  
 		  Try
@@ -125,9 +299,8 @@ Protected Module Utils
 		      End If
 		    End
 		  Catch e As IOException
-		    ErrorHandler(2,"IO Issue writing file '", "There was an issue writting a file to: '" + folder.URLPath + "'")
+		    PopupHandler(2,"IO Issue writing file", "File could not be written to: ' + folder.URLPath + '")
 		  End Try
-		  
 		  
 		  
 		  
@@ -135,14 +308,39 @@ Protected Module Utils
 		End Sub
 	#tag EndMethod
 
-
-	#tag Property, Flags = &h0
-		currentAddButton As KanbanButton
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		currentBanner As KanbanBanner
-	#tag EndProperty
+	#tag Method, Flags = &h0
+		Sub WriteFile(path as String, data as string, overwrite as boolean, permissions as String = "nil")
+		  Var fullFilePath As FolderItem= New FolderItem(path)
+		  Var output As TextOutputStream
+		  
+		  Try
+		    If(overwrite) Then // Write or Overwrite
+		      output= TextOutputStream.Create(fullFilePath)
+		      output.Encoding = Encodings.SystemDefault
+		      output.WriteLine(data)
+		      output.Close
+		    Else // Write New
+		      If(fullFilePath= Nil) Then
+		        output= TextOutputStream.Create(fullFilePath)
+		        output.Encoding = Encodings.SystemDefault
+		        output.WriteLine(data)
+		        output.Close
+		      Else // Append
+		        output= TextOutputStream.Open(fullFilePath)
+		        output.Encoding = Encodings.SystemDefault
+		        output.Write(data)
+		        output.Close
+		      End If
+		    End
+		  Catch e As IOException
+		    PopupHandler(2,"IO Issue writing file", "File could not be written to: ' + folder.URLPath + '")
+		  End Try
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
 
 
 	#tag ViewBehavior

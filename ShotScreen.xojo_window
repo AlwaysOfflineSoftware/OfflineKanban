@@ -146,13 +146,109 @@ Begin DesktopWindow ShotScreen
       Visible         =   True
       Width           =   80
    End
+   Begin DesktopButton btn_Done
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   True
+      Caption         =   "Done"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   26
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   576
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      MacButtonStyle  =   0
+      Scope           =   0
+      TabIndex        =   4
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   244
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   80
+   End
 End
 #tag EndDesktopWindow
 
 #tag WindowCode
+	#tag Event
+		Sub Opening()
+		  Self.CardID= EditCardScreen.cardID
+		  
+		  For Each item As FolderItem In App.dataFolder.Children
+		    // System.DebugLog(CardID.ToString + "." + item.Extension)
+		    If(item.IsFolder) Then
+		      Continue
+		    ElseIf(item.Extension<> "" And item.Name= CardID.ToString + "." + item.Extension) Then
+		      Self.imv_Screenshot.Image=_
+		       Utils.LoadPicture(item,Self.imv_Screenshot.Width, Self.imv_Screenshot.Height)
+		      attatchExtension=item.Extension
+		    End
+		  Next
+		End Sub
+	#tag EndEvent
+
+
+	#tag Property, Flags = &h0
+		attatchExtension As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		CardID As Integer = 0
+	#tag EndProperty
+
+
 #tag EndWindowCode
 
 #tag Events btn_Cancel
+	#tag Event
+		Sub Pressed()
+		  ShotScreen.Close
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btn_Set
+	#tag Event
+		Sub Pressed()
+		  Var imageAttatchment As FolderItem = Utils.SelectTargetDialog("Home")
+		  
+		  If(imageAttatchment<> Nil) Then
+		    Self.imv_Screenshot.Image=_ 
+		    Utils.LoadPicture(imageAttatchment,Self.imv_Screenshot.Width, Self.imv_Screenshot.Height)
+		    
+		    imageAttatchment.CopyTo(App.dataFolder)
+		    
+		    App.dataFolder.Child(imageAttatchment.Name).Name= Self.CardID.ToString + "." + imageAttatchment.Extension
+		    
+		  End
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btn_Delete
+	#tag Event
+		Sub Pressed()
+		  Self.imv_Screenshot.Image= img_Shot
+		  
+		  App.dataFolder.Child(CardID.ToString + "." + attatchExtension).Remove
+		  
+		  
+		  EditCardScreen.chk_ImgAttatched.Value= False
+		  EditCardScreen.chk_ImgAttatched.Tooltip="No image Attatched"
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btn_Done
 	#tag Event
 		Sub Pressed()
 		  ShotScreen.Close

@@ -157,7 +157,7 @@ Begin DesktopWindow EditCardScreen
       Underline       =   False
       ValidationMask  =   ""
       Visible         =   True
-      Width           =   529
+      Width           =   433
    End
    Begin DesktopLabel lbl_Details
       AllowAutoDeactivate=   True
@@ -452,6 +452,79 @@ Begin DesktopWindow EditCardScreen
       Visible         =   True
       Width           =   133
    End
+   Begin DesktopCheckBox chk_ImgAttatched
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Caption         =   ""
+      Enabled         =   False
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   30
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   516
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   13
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   "No image Attatched"
+      Top             =   20
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      VisualState     =   0
+      Width           =   22
+   End
+   Begin DesktopBevelButton btn_Screenshot
+      AllowAutoDeactivate=   True
+      AllowFocus      =   True
+      AllowTabStop    =   True
+      BackgroundColor =   &c00000000
+      BevelStyle      =   0
+      Bold            =   False
+      ButtonStyle     =   0
+      Caption         =   ""
+      CaptionAlignment=   3
+      CaptionDelta    =   0
+      CaptionPosition =   1
+      Enabled         =   True
+      FontName        =   "Liberation Sans"
+      FontSize        =   0.0
+      FontUnit        =   0
+      HasBackgroundColor=   False
+      Height          =   30
+      Icon            =   1584345087
+      IconAlignment   =   1
+      IconDeltaX      =   0
+      IconDeltaY      =   0
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   540
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      MenuStyle       =   0
+      Scope           =   0
+      TabIndex        =   14
+      TabPanelIndex   =   0
+      TextColor       =   &c00000000
+      Tooltip         =   "Image Attatchments"
+      Top             =   20
+      Transparent     =   False
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      Width           =   60
+   End
 End
 #tag EndDesktopWindow
 
@@ -500,7 +573,7 @@ End
 		      EditCardScreen.Close
 		    End
 		  Else
-		    ErrorHandler(2,"Name Error","You cannot create a card with a blank name")
+		    Utils.PopupHandler(2,"Name Error","You cannot create a card with a blank name")
 		  End
 		  
 		End Sub
@@ -516,6 +589,13 @@ End
 		  RemoveCard(in_id)
 		  deleteRecord(in_id)
 		  EditCardScreen.Close
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btn_Screenshot
+	#tag Event
+		Sub Pressed()
+		  ShotScreen.Show
 		End Sub
 	#tag EndEvent
 #tag EndEvents
