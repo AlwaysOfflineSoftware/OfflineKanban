@@ -58,7 +58,7 @@ End
 		  g.TextUnit=FontUnits.Point
 		  g.TextSize=24
 		  g.DrawText("Backlog",30,(Self.Height/2)+(24*0.33))
-		  g.DrawText("In Progress",(bannerX/2)-45,(bannerY/2)+(24*0.33))
+		  g.DrawText("In Progress",(bannerX/2)-70,(bannerY/2)+(24*0.33))
 		  g.DrawText("Complete",(bannerX)-130,(bannerY/2)+(24*0.33))
 		  
 		End Sub

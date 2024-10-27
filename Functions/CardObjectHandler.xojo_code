@@ -172,7 +172,7 @@ Protected Module CardObjectHandler
 
 	#tag Method, Flags = &h0
 		Function CardWriteTitle(titleStr as String) As String
-		  var maxChars as Integer= 22
+		  Var maxChars As Integer= 14
 		  var charCount as integer= 0
 		  var maxLines as Boolean= False
 		  
@@ -184,7 +184,7 @@ Protected Module CardObjectHandler
 		  Var titleArray() as string= titleStr.Split("")
 		  
 		  For i as integer = 0 to titleArray.LastIndex
-		    if(titleArray(i)= " ") then
+		    If(titleArray(i)= " ") Then
 		      LastSpaceLoc= i
 		      preSpaceString= formattedString
 		      postSpaceString= ""
@@ -199,10 +199,10 @@ Protected Module CardObjectHandler
 		      formattedString = preSpaceString + EndOfLine + postSpaceString + titleArray(i)
 		      charCount= postSpaceString.Length
 		      maxLines=True
-		    end
+		    End
 		    charCount= charCount+1
 		    
-		    if(maxLines AND charCount=22) then
+		    If(maxLines And charCount=14) Then
 		      formattedString= formattedString + "..."
 		      return formattedString
 		    end
